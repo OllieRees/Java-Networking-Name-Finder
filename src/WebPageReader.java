@@ -32,6 +32,7 @@ public class WebPageReader {
 		//get the email ID. Have to try because it's scared that I may not use my OWN program correctly. 
 		try {
 			email_id = read_email_id.readLine(); //user input for email id is stored in email_id
+			read_email_id.close(); 
 		} catch (IOException e) {
 			e.printStackTrace();
 		} 
@@ -56,6 +57,7 @@ public class WebPageReader {
 			name = keyword_line.substring(keyword_line.indexOf(keyword), keyword_line.indexOf("</h1>")); //contains the keyword + value
 			name = name.replace(keyword, ""); //removing the keyword (the hash-key if you will)			
 			
+			read_URL.close();
 			
 		} catch (MalformedURLException mue) {
 			mue.printStackTrace(); //print error 
