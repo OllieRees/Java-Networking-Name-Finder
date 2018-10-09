@@ -1,81 +1,86 @@
 import java.io.*; //contains Buffered Reader class
-import java.net.*;
+import java.net.*; //contains URL objects, etc.
 
 //reads a webpage based on the email id, and prints out the name belonging to the email id
 public class WebPageReader {
 	
-	protected String email_id; //stores the email id
+	protected String ID; //stores the email id
 	protected String web_address; //stores the web address link
-	protected String name;
+	protected String name; //stores the name of the email-holder
 	
 	public static void main(String[] args) {
-		WebPageReader wbp = new WebPageReader(); 
-		System.out.println(wbp.get_emailID()); 
-		wbp.parse_webAdress("property=\"name\">"); 
-		System.out.println(wbp.get_name());
-	}
-	
-	//will construct the web page address based off the email id 
-	public WebPageReader() {
-		this.read_emailID(); //reads the emailID of the user
-		web_address = "https://www.ecs.soton.ac.uk/people/" + get_emailID(); //uses the email ID to find the web address the user wants
 		
+		WebPageReader wbp = new WebPageReader();  //create a new class object
+		wbp.read_ID(); //get the ID from the user
+		wbp.set_webAddress("https://www.ecs.soton.ac.uk/people/"); //set the web address using the link provided and the ID state
+		System.out.println(wbp.get_ID());  //return the emailID 
+		wbp.find_keyword(wbp.get_webAddress(), "property=\"name\">", "</h1>"); //find the value of the property="name" key
+		System.out.println(wbp.get_name()); //return name on console 
 	}
 	
 	//reads the emailID from the user
-	public void read_emailID() { //possibly a once-use method, but better to abstract
+	public void read_ID() { //possibly a once-use method, but better to abstract
 		
 		//finding the emailID via Buffer Reader
-		BufferedReader read_email_id = new BufferedReader(new InputStreamReader((System.in))); //creates an object to better read input
-		System.out.print("What's the email ID: "); 
+		BufferedReader in = new BufferedReader(new InputStreamReader((System.in))); //creates an object to better read input
+		System.out.print("What's the ID: "); 
 				
 		//get the email ID. Have to try because it's scared that I may not use my OWN program correctly. 
 		try {
-			email_id = read_email_id.readLine(); //user input for email id is stored in email_id
+			ID = in.readLine(); //user input for email id is stored in the field provided in the argument, in this case it will be email_id.
+			in.close(); //closes input
 		} catch (IOException e) {
 			e.printStackTrace();
 		} 
-		
 	}
 	
-	//parses through the URL object and returns the value of the keyword
-	protected void parse_webAdress(String keyword) {
+	//will construct the web page address based off the email id 
+	public void set_webAddress(String link) {
+		this.web_address = link + get_ID(); //uses the email ID to find the web address the user wants
+	}
+	
+	//parses through the URL object and returns the line with the keyword in
+	protected void find_keyword(String web_address, String keyword, String endingTag)  {
+		
 		try {
 			URL web_address_url = new URL(web_address); //turn the web address link to a URL object
 			BufferedReader read_URL = new BufferedReader(new InputStreamReader(web_address_url.openStream())); //read text returned from server (or read the URL)
-			String keyword_line; //takes in the string of characters with property = "name"> <name> <
+			String keywordLine; 	//takes in the string of characters with property = "name"> <name> <
 			
 			//cycle through every line in the URL source code until the line with the keyword comes up
-			while((keyword_line = read_URL.readLine()) != null) { //stores a line of the URL in keyword line every iteration
-				if(keyword_line.contains(keyword)) { //break the while loop if the line with the keyword appears
+			while((keywordLine = read_URL.readLine()) != null) { //stores a line of the URL in keyword line every iteration
+				if(keywordLine.contains(keyword)) { //break the while loop if the line with the keyword appears
 					break;
 				}
 			}
 			
-			//finding the keyword value within the line
-			name = keyword_line.substring(keyword_line.indexOf(keyword), keyword_line.indexOf("</h1>")); //contains the keyword + value
-			name = name.replace(keyword, ""); //removing the keyword (the hash-key if you will)			
+			/* takes a keyword line and finds the value of the keyword	
+			 * How can we make sure that any field can be used, instead of just name?
+			 */
+			this.name = keywordLine.substring(keywordLine.indexOf(keyword), keywordLine.indexOf(endingTag)); //contains the keyword + value
+			this.name = this.name.replace(keyword, ""); //removing the keyword (the hash-key if you will)		
 			
-			
-		} catch (MalformedURLException mue) {
-			mue.printStackTrace(); //print error 
+		} catch(MalformedURLException mue) {
+			mue.printStackTrace();
+		} catch(IOException ioe) {
+			ioe.printStackTrace();
 		}
-		  catch (IOException ioe) {
-			  ioe.printStackTrace(); //print error
-		  }
+		
 	}
 	
 	//returns the email ID - I could have not used this, but again abstraction and encapsulation. 
-	protected String get_emailID() {
-		return email_id;
+	protected String get_ID() {
+		return this.ID;
 	}
 	
 	//returns the web address
 	protected String get_webAddress() {
-		return web_address;
+		return this.web_address;
 	}
 	
+	
+	//returns the name of the email-holder
 	protected String get_name() { 
-		return name;
+		return this.name;
 	}
 }
