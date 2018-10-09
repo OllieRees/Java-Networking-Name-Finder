@@ -27,13 +27,10 @@ public class WebPageReader {
 				
 		//get the email ID. Have to try because it's scared that I may not use my OWN program correctly. 
 		try {
-<<<<<<< HEAD
+
 			ID = in.readLine(); //user input for email id is stored in the field provided in the argument, in this case it will be email_id.
 			in.close(); //closes input
-=======
-			email_id = read_email_id.readLine(); //user input for email id is stored in email_id
-			read_email_id.close(); 
->>>>>>> 402d370f19fab7be2e68e5a9f074c3caa58b464e
+
 		} catch (IOException e) {
 			e.printStackTrace();
 		} 
@@ -58,20 +55,14 @@ public class WebPageReader {
 					break;
 				}
 			}
-			
-<<<<<<< HEAD
+
 			/* takes a keyword line and finds the value of the keyword	
 			 * How can we make sure that any field can be used, instead of just name?
 			 */
 			this.name = keywordLine.substring(keywordLine.indexOf(keyword), keywordLine.indexOf(endingTag)); //contains the keyword + value
 			this.name = this.name.replace(keyword, ""); //removing the keyword (the hash-key if you will)		
-=======
-			//finding the keyword value within the line
-			name = keyword_line.substring(keyword_line.indexOf(keyword), keyword_line.indexOf("</h1>")); //contains the keyword + value
-			name = name.replace(keyword, ""); //removing the keyword (the hash-key if you will)			
 			
 			read_URL.close();
->>>>>>> 402d370f19fab7be2e68e5a9f074c3caa58b464e
 			
 		} catch(MalformedURLException mue) {
 			mue.printStackTrace();
