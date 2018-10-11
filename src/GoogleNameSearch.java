@@ -37,8 +37,16 @@ public class GoogleNameSearch {
 	//Return the first URL google provides 
 	 public void findGoogleSearch_first(String googleSearch_address) {
 		try {
-			URL googleSearch_URL = new URL(googleSearch_address);
-		 	BufferedReader gs_stream = new BufferedReader(new InputStreamReader(googleSearch_URL.openStream())); //this seems to be the 403 error source
+			
+			//open a connection to the google search URL
+			URLConnection googleSearch_URLcon = new URL(googleSearch_address).openConnection();
+			
+			//ruse google into thinking I'm a human using a browser
+		 	googleSearch_URLcon.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.100 Safari/537.36");
+
+		 	//read the entire URL source code
+		 	BufferedReader gs_stream = new BufferedReader(new InputStreamReader(googleSearch_URLcon.getInputStream())); //this seems to be the 403 error source
+		 			 	
 		 	String keywordLine;
 		 	
 		 	//cycles through the URL stream until the line with search results is found.
@@ -51,6 +59,8 @@ public class GoogleNameSearch {
 		 	gs_stream.close();
 		 	
 		 	this.homePage_webAddress = keywordLine.substring(keywordLine.indexOf("<a href=\""), keywordLine.indexOf("ping"));  //stores the first link from the line with Search Results on
+		 	this.homePage_webAddress = this.homePage_webAddress.replaceAll("<a href=", ""); //remove tag
+		 	this.homePage_webAddress = this.homePage_webAddress.replaceAll("\"", "");
 		 	
 		} catch(MalformedURLException mue) {
 			mue.printStackTrace(); 
