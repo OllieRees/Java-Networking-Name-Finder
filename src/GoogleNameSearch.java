@@ -60,7 +60,7 @@ public class GoogleNameSearch {
 		 	
 		 	this.homePage_webAddress = keywordLine.substring(keywordLine.indexOf("<a href=\""), keywordLine.indexOf("ping"));  //stores the first link from the line with Search Results on
 		 	this.homePage_webAddress = this.homePage_webAddress.replaceAll("<a href=", ""); //remove tag
-		 	this.homePage_webAddress = this.homePage_webAddress.replaceAll("\"", "");
+		 	this.homePage_webAddress = this.homePage_webAddress.replaceAll("\"", ""); //remove the quotes surrounding the link
 		 	
 		} catch(MalformedURLException mue) {
 			mue.printStackTrace(); 
@@ -80,6 +80,7 @@ public class GoogleNameSearch {
 		return this.googleSearch_webAddress;
 	}
 	
+	//accessor method for getting the first link google returns
 	protected String get_homePage_webAddress() {
 		return this.homePage_webAddress;
 	}
