@@ -63,9 +63,8 @@ public class WebPageReader {
 			this.name = this.name.replace(keyword, ""); //removing the keyword (the hash-key if you will)
 			
 			read_URL.close();
-			
-		} catch(MalformedURLException mue) {
-			mue.printStackTrace();
+	
+		//IOException contains the MalformedURLException class
 		} catch(IOException ioe) {
 			ioe.printStackTrace();
 		}
