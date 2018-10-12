@@ -42,7 +42,7 @@ public class WebPageReader {
 	}
 	
 	//parses through the URL object and returns the line with the keyword in
-	protected void find_keyword(String web_address, String keyword, String endingTag)  {
+	public void find_keyword(String web_address, String keyword, String endingTag)  {
 		
 		try {
 			URL web_address_url = new URL(web_address); //turn the web address link to a URL object
