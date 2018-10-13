@@ -57,8 +57,11 @@ public class GoogleNameSearch {
 		 	}
 		 	
 		 	gs_stream.close();
-		 	
-		 	this.homePage_webAddress = keywordLine.substring(keywordLine.indexOf("<a href=\""), keywordLine.indexOf("ping"));  //stores the first link from the line with Search Results on
+		 	try {
+		 		this.homePage_webAddress = keywordLine.substring(keywordLine.indexOf("<a href=\""), keywordLine.indexOf(" data-ved")); //stores the first link from the line with Search Result on. NB: Sometimes the ending line isn't ping.
+		 	} catch (IndexOutOfBoundsException ioobe) {
+		 		this.homePage_webAddress = keywordLine.substring(keywordLine.indexOf("<a href=\""), keywordLine.indexOf("ping")); 
+		 	}
 		 	this.homePage_webAddress = this.homePage_webAddress.replaceAll("<a href=", ""); //remove tag
 		 	this.homePage_webAddress = this.homePage_webAddress.replaceAll("\"", ""); //remove the quotes surrounding the link
 		 	
